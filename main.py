@@ -20,8 +20,7 @@ DATA_DIR = "data/anuneko_sessions.json"  # 会话存储文件
 class Main(Star):
     def __init__(self, context: Context):
         super().__init__(context)
-        self.config = context.config.get("anuneko", {})  # 从配置加载
-        self.x_token = self.config.get("x_token")
+        self.x_token = self.context.get_config("x_token")
         if not self.x_token:
             logger.warning("AnuNeko x-token 未配置，请在 WebUI 设置。")
 
