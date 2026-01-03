@@ -1,4 +1,4 @@
-name: anuneko
+name: astrbot_plugin_anuneko
 display_name: AnuNeko
 desc: AnuNeko AI 对话插件，使用 anuneko.com API
 version: 1.0.0

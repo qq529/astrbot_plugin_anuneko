@@ -14,8 +14,14 @@ DATA_DIR = "data/anuneko_sessions.json"  # 会话存储文件
 class Main(Star):
     def __init__(self, context: Context):
         super().__init__(context)
-        self.config = context.config.get("anuneko", {})
-        self.x_token = self.config.get("x_token")
+        self.x_token = ""
+        # 兼容性处理：尝试不同的配置获取方式
+        if hasattr(context, "config"):
+             self.config = context.config.get("anuneko", {})
+             self.x_token = self.config.get("x_token")
+        else:
+             logger.warning("Context object has no config attribute. Please check AstrBot version.")
+
         if not self.x_token:
             logger.warning("AnuNeko x-token 未配置，请在 WebUI 设置。")
 
