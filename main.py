@@ -12,16 +12,24 @@ DATA_DIR = "data/anuneko_sessions.json"  # 会话存储文件
 
 @register("anuneko", "YourName", "AnuNeko AI 对话插件，基于 anuneko.com API，支持分支决策", "1.0.0", "https://github.com/YourUsername/astrbot_plugin_anuneko.git")
 class Main(Star):
-    def __init__(self, context: Context):
+    def __init__(self, context: Context, **kwargs):
         super().__init__(context)
         self.x_token = ""
-        # 兼容性处理：尝试不同的配置获取方式
-        if hasattr(context, "config"):
-             self.config = context.config.get("anuneko", {})
+        
+        # 尝试从 kwargs 中获取 config (AstrBot 新版注入)
+        if "config" in kwargs:
+             self.config = kwargs["config"]
              self.x_token = self.config.get("x_token")
+        # 尝试从 context 中获取 config (AstrBot 旧版)
+        elif hasattr(context, "config"):
+             self.config = context.config.get("astrbot_plugin_anuneko", {})
+             self.x_token = self.config.get("x_token")
+        # 尝试使用 context.get_config 方法 (某些版本)
+        elif hasattr(context, "get_config"):
+             self.x_token = context.get_config("x_token")
         else:
-             logger.warning("Context object has no config attribute. Please check AstrBot version.")
-
+             logger.warning("Could not load config. Context has no 'config' attr and no 'config' arg provided.")
+ 
         if not self.x_token:
             logger.warning("AnuNeko x-token 未配置，请在 WebUI 设置。")
 
