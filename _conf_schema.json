@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "x_token": {
+      "type": "string",
+      "title": "AnuNeko x-token",
+      "description": "从 anuneko.com 登录后获取的 x-token"
+    }
+  },
+  "required": ["x_token"]
+}
